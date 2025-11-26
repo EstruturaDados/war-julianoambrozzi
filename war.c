@@ -6,17 +6,19 @@
 //
 // Bibliotecas necessárias para o desenvolvimento do exercício
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h> // Para strcspn()
+#include <string.h>
 
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
 #define MAX_TERRITORIOS 5
-#define TAMANHO_STRING 50
 
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
-
+struct territorio{
+    char nome[30];
+    char cor[10];
+    int num_tropas;
+};
 
 // Caso necessário, uma função para limpar o buffer de entrada
 void limparBufferEntrada(){
@@ -24,10 +26,16 @@ void limparBufferEntrada(){
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
 int main() {
+    struct territorio territorios[MAX_TERRITORIOS];
+    int totalTerritorios = 0;
+    int opcao;
+
+    for(int i=0; i < totalTerritorios; i++){
+        
+    }
     
     return 0;
 }
