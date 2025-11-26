@@ -21,20 +21,21 @@ struct territorio{
 };
 
 // Caso necessário, uma função para limpar o buffer de entrada
-void limparBufferEntrada(){
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
-}
 
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
 int main() {
     struct territorio territorios[MAX_TERRITORIOS];
     int totalTerritorios = 0;
-    int opcao;
+    
+    printf("===============================================================\n");
+    printf("Olá, a seguir vamos cadastrar os 5 territorios iniciais do jogo\n");
+    printf("===============================================================\n");
 
-    for(int i=0; i < totalTerritorios; i++){
-        
+    for(int i=0; i <= 4; i++){
+        printf("Cadastrando o territorio 1: \n");
+        printf("Digite o nome do territorio: \n");
+        fgets(territorio[totalTerritorios].nome);
     }
     
     return 0;
