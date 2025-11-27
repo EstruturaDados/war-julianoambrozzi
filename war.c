@@ -9,7 +9,7 @@
 #include <string.h>
 
 // --- Constantes Globais ---
-// Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
+// Definem valores fixos para o número de territórios.
 #define MAX_TERRITORIOS 3
 #define TAM_NOME 30
 #define TAM_COR 10
@@ -22,7 +22,9 @@ struct territorio{
     int numTropas;
 };
 
-// Caso necessário, uma função para limpar o buffer de entrada
+// Aqui eu fiz o uso de uma função para limpar o buffer de entrada,
+//utilizei baseado a orientação da profesora Deisy Albuquerque,
+//para evitar possiveis problemas com o scanf.
 void limparBufferEntrada(){
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
@@ -36,6 +38,7 @@ int main() {
     printf("Olá, a seguir vamos cadastrar os 5 territórios iniciais do jogo\n");
     printf("===============================================================\n");
 
+    //Aqui foi utilizado o "for" junto com as variáveis para definir quantas vezes o codigo vai executar.
     for(int i=0; i < MAX_TERRITORIOS; i++){
         printf("Cadastrando o território %d\n", i + 1);
         printf("Digite o nome do território: ");
@@ -52,6 +55,7 @@ int main() {
         limparBufferEntrada();
     }
 
+    //Fiz o uso da sequencia de alguns printfs para deixar o codigo um pouco mais bonito e melhor de se visualizar.
     printf("=========================================\n");
     printf("---TERRITÓRIOS CADASTRADOS COM SUCESSO---\n");
     printf("=========================================\n\n");
@@ -60,6 +64,8 @@ int main() {
     printf("---LISTAGEM DOS TERRITÓRIOS DO MAPA---\n");
     printf("=========================================\n\n");
 
+    //Nestre trecho do codigo fiz novamente o uso do "for",
+    //a fins de facilitar a saida e exibição dos dados.
     for (int i = 0; i < MAX_TERRITORIOS; i++) {
         printf("---Território %d:\n", i + 1);
         printf("Nome: %s\n", mapa[i].nome);
