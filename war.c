@@ -65,7 +65,8 @@ int main() {
     printf("=========================================\n\n");
 
     //Nestre trecho do codigo fiz novamente o uso do "for",
-    //a fins de facilitar a saida e exibição dos dados.
+    //a fins de facilitar a saida e exibição dos dados, aonde cada vez que o "i" for encrementado em +1,
+    //e o laço repetir, vai exibir os dados contidos em cada posição do vetor.
     for (int i = 0; i < MAX_TERRITORIOS; i++) {
         printf("---Território %d:\n", i + 1);
         printf("Nome: %s\n", mapa[i].nome);
