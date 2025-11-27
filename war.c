@@ -11,34 +11,63 @@
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
 #define MAX_TERRITORIOS 5
+#define TAM_NOME 30
+#define TAM_COR 10
 
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
 struct territorio{
-    char nome[30];
-    char cor[10];
-    int num_tropas;
+    char nome[TAM_NOME];
+    char cor[TAM_COR];
+    int numTropas;
 };
 
 // Caso necessário, uma função para limpar o buffer de entrada
+void limparBufferEntrada(){
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 // --- Função Principal (main) ---
-// Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
 int main() {
-    struct territorio territorios[MAX_TERRITORIOS];
-    int totalTerritorios = 0;
+    struct territorio mapa[MAX_TERRITORIOS];
     
     printf("===============================================================\n");
     printf("Olá, a seguir vamos cadastrar os 5 territorios iniciais do jogo\n");
     printf("===============================================================\n");
 
-    for(int i=0; i <= 4; i++){
-        printf("Cadastrando o territorio 1: \n");
-        printf("Digite o nome do territorio: \n");
-        fgets(territorio[totalTerritorios].nome);
+    for(int i=0; i < MAX_TERRITORIOS; i++){
+        printf("Cadastrando o territorio %d\n", i + 1);
+        printf("Digite o nome do territorio: ");
+        fgets(mapa[i].nome, TAM_NOME, stdin);
+
+        printf("Digite uma cor para o territorio (Ex: Azul, Vermelho): ");
+        fgets(mapa[i].cor, TAM_COR, stdin);
+
+        printf("Digite o numero de tropas do territorio: ");
+        scanf("%d", &mapa[i].numTropas);
+
+        mapa[i].nome[strcspn(mapa[i].nome, "\n")] = '\0';
+        mapa[i].cor[strcspn(mapa[i].cor, "\n\n")] = '\0';
+        limparBufferEntrada();
+    }
+
+    printf("=========================================\n");
+    printf("---TERRITORIOS CADASTRADOS COM SUCESSO--- \n\n");
+    printf("=========================================\n");
+
+    printf("=========================================\n");
+    printf("---LISTAGEM DOS TERRITORIOS DO MAPA---\n\n");
+    printf("=========================================\n");
+
+    for (int i = 0; i < MAX_TERRITORIOS; i++) {
+        printf("Território %d:\n", i + 1);
+        printf("Nome: %s\n", mapa[i].nome);
+        printf("Cor: %s\n", mapa[i].cor);
+        printf("Tropas: %d\n\n", mapa[i].numTropas);
     }
     
-    return 0;
+    return 0;    
 }
 
 // --- Implementação das Funções ---
