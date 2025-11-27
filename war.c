@@ -9,13 +9,13 @@
 #include <string.h>
 
 // --- Constantes Globais ---
-// Definem valores fixos para o número de territórios.
+// Definido valores fixos para o número de territórios, tamanho nome e cor.
 #define MAX_TERRITORIOS 3
 #define TAM_NOME 30
 #define TAM_COR 10
 
 // --- Estrutura de Dados ---
-// Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
+// Definida a struct com nome de território, contendo seu nome, a cor do exército e o número de tropas.
 struct territorio{
     char nome[TAM_NOME];
     char cor[TAM_COR];
