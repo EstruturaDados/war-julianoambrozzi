@@ -10,7 +10,7 @@
 
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
-#define MAX_TERRITORIOS 5
+#define MAX_TERRITORIOS 3
 #define TAM_NOME 30
 #define TAM_COR 10
 
@@ -33,18 +33,18 @@ int main() {
     struct territorio mapa[MAX_TERRITORIOS];
     
     printf("===============================================================\n");
-    printf("Olá, a seguir vamos cadastrar os 5 territorios iniciais do jogo\n");
+    printf("Olá, a seguir vamos cadastrar os 5 territórios iniciais do jogo\n");
     printf("===============================================================\n");
 
     for(int i=0; i < MAX_TERRITORIOS; i++){
-        printf("Cadastrando o territorio %d\n", i + 1);
-        printf("Digite o nome do territorio: ");
+        printf("Cadastrando o território %d\n", i + 1);
+        printf("Digite o nome do território: ");
         fgets(mapa[i].nome, TAM_NOME, stdin);
 
-        printf("Digite uma cor para o territorio (Ex: Azul, Vermelho): ");
+        printf("Digite uma cor para o território (Ex: Azul, Vermelho): ");
         fgets(mapa[i].cor, TAM_COR, stdin);
 
-        printf("Digite o numero de tropas do territorio: ");
+        printf("Digite o numero de tropas do território: ");
         scanf("%d", &mapa[i].numTropas);
 
         mapa[i].nome[strcspn(mapa[i].nome, "\n")] = '\0';
@@ -53,20 +53,19 @@ int main() {
     }
 
     printf("=========================================\n");
-    printf("---TERRITORIOS CADASTRADOS COM SUCESSO--- \n\n");
-    printf("=========================================\n");
+    printf("---TERRITÓRIOS CADASTRADOS COM SUCESSO---\n");
+    printf("=========================================\n\n");
 
     printf("=========================================\n");
-    printf("---LISTAGEM DOS TERRITORIOS DO MAPA---\n\n");
-    printf("=========================================\n");
+    printf("---LISTAGEM DOS TERRITÓRIOS DO MAPA---\n");
+    printf("=========================================\n\n");
 
     for (int i = 0; i < MAX_TERRITORIOS; i++) {
-        printf("Território %d:\n", i + 1);
+        printf("---Território %d:\n", i + 1);
         printf("Nome: %s\n", mapa[i].nome);
         printf("Cor: %s\n", mapa[i].cor);
         printf("Tropas: %d\n\n", mapa[i].numTropas);
-    }
-    
+    }    
     return 0;    
 }
 
