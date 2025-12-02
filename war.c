@@ -10,7 +10,7 @@
 
 // --- Constantes Globais ---
 // Definido valores fixos para o número de territórios, tamanho nome e cor.
-#define MAX_TERRITORIOS 3
+#define MAX_TERRITORIOS 5
 #define TAM_NOME 30
 #define TAM_COR 10
 
@@ -71,7 +71,7 @@ int main() {
         printf("%d.", i + 1);
         printf(" %s", mapa[i].nome);
         printf(" (Exercito %s,", mapa[i].cor);
-        printf(" Tropas: %d)\n\n", mapa[i].numTropas);
+        printf(" Tropas: %d)\n", mapa[i].numTropas);
     }
     return 0;
 }
