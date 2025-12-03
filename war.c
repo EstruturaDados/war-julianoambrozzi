@@ -10,13 +10,13 @@
 #include <string.h>
 #include <time.h>
 
-// --- Constantes Globais ---
+// === Constantes Globais ===
 // Definido valores fixos para tamanho de nome e cor.
 // #define MAX_TERRITORIOS 5 - aqui conforme solicitado retirado valor fixo.
 #define TAM_NOME 30
 #define TAM_COR 10
 
-// --- Estrutura de Dados ---
+// === Estrutura de Dados ===
 // Definida a struct com nome de território, contendo seu nome, a cor do exército e o número de tropas.
 typedef struct {
     char nome[TAM_NOME];
@@ -43,22 +43,22 @@ void atacar(Territorio* atacante, Territorio* defensor) {
     
     //Caso o atacante vença a rodada ele ganha 1 tropa do defensor   
     if (dadoAtacante > dadoDefensor) {
-        printf("== O atacante venceu a rodada! ==\n");
+        printf("=== O atacante venceu a rodada! ===\n");
 
         defensor->numTropas -= 1; //Defensor perde 1 tropa
         atacante->numTropas += 1; //Atacante ganha 1 tropa do defensor
 
         //Caso o defensor eprca todas as tropas, ele perde seu território para o atacante
         if (defensor->numTropas <= 0) {
-            printf("== O defensor perdeu o território! ==\n");
+            printf("=== O defensor perdeu o território! ===\n");
             strcpy(defensor->cor, atacante->cor);
-            defensor->numTropas = 1; // território conquistado começa com 1 tropa
+            defensor->numTropas = 1; //Território conquistado começa com 1 tropa
         }
     }
     
     //Caso o atacante perca a rodada    
     else{
-        printf("== O defensor resistiu ao ataque! ==\n");
+        printf("=== O defensor resistiu ao ataque! ===\n");
 
         atacante->numTropas -= 1;
 
@@ -72,8 +72,8 @@ void atacar(Territorio* atacante, Territorio* defensor) {
 }
 
 
-// --- Função Principal (main) ---
-int main() {    
+// === Função Principal (main) ===
+int main() {
     
     printf("===============================================================\n");
     printf("Olá, a seguir vamos cadastrar os territórios iniciais do jogo\n");
@@ -84,7 +84,7 @@ int main() {
     printf("Quantos territorios deseja cadastrar?\n");
     printf("=====================================\n");
     scanf("%d", &qtdTerritorios);
-    limparBufferEntrada(); // limpa o \n do buffer deixado pelo scanf
+    limparBufferEntrada(); //limpa o \n do buffer deixado pelo scanf
 
     //Alocação dinamica da memória
     Territorio* mapa = malloc(qtdTerritorios* sizeof(Territorio));
@@ -131,6 +131,64 @@ int main() {
     }
     free(mapa);
     return 0;
+
+    //=== FASE DE ATAQUE ===
+    int atacante, defensor;
+
+    while (1) {
+        printf("\n====================\n");
+        printf("---FASE DE ATAQUE---\n");
+        printf("======================\n");
+
+        //Escolher atacante
+        printf("Escolha o território ATACANTE de 1 a %d ou 0 para sair: ", qtdTerritorios);
+        scanf("%d", &atacante);
+        limparBufferEntrada();
+
+        if (atacante == 0) {
+            printf("Saindo da fase de ataque...\n");
+            break;
+        }
+        atacante--; //Ajustar para índice
+
+        if (atacante < 0 || atacante >= qtdTerritorios) {
+            printf("Opção inválida! Tente novamente.\n");
+            continue;
+        }
+
+        //Escolher defensor
+        printf("Escolha o território DEFENSOR de 1 a %d ou 0 para sair: ", qtdTerritorios);
+        scanf("%d", &defensor);
+        limparBufferEntrada();
+
+        if (defensor == 0) {
+            printf("Saindo da fase de ataque...\n");
+            break;
+        }
+        defensor--; //Ajustar para índice
+
+        if (defensor < 0 || defensor >= qtdTerritorios) {
+            printf("Opção inválida! Tente novamente.\n");
+            continue;
+        }
+
+        if (atacante == defensor) {
+            printf("Um território não pode atacar ele mesmo!\n");
+            continue;
+        }
+
+        // Executar o ataque
+        atacar(&mapa[atacante], &mapa[defensor]);
+
+        // Mostrar estado atualizado após o ataque
+        printf("\n--- ESTADO ATUAL DO MAPA ---\n");
+        for (int i = 0; i < qtdTerritorios; i++) {
+        printf("%d.", i + 1);
+        printf(" %s", mapa[i].nome);
+        printf(" (Exercito %s,", mapa[i].cor);
+        printf(" Tropas: %d)\n", mapa[i].numTropas);
+        }
+    }
 }
 
 // --- Implementação das Funções ---
