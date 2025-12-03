@@ -43,27 +43,26 @@ void atacar(Territorio* atacante, Territorio* defensor) {
     
     //Caso o atacante vença a rodada ele ganha 1 tropa do defensor   
     if (dadoAtacante > dadoDefensor) {
-        printf(">> O atacante venceu a rodada!\n");
+        printf("== O atacante venceu a rodada! ==\n");
 
-        defensor->numTropas -= 1; // defensor perde 1 tropa
-        atacante->numTropas += 1; // atacante ganha 1 tropa do defensor
+        defensor->numTropas -= 1; //Defensor perde 1 tropa
+        atacante->numTropas += 1; //Atacante ganha 1 tropa do defensor
 
-        // defensor perdeu todas as tropas?
+        //Caso o defensor eprca todas as tropas, ele perde seu território para o atacante
         if (defensor->numTropas <= 0) {
-            printf(">> O defensor perdeu o território!\n");
+            printf("== O defensor perdeu o território! ==\n");
             strcpy(defensor->cor, atacante->cor);
             defensor->numTropas = 1; // território conquistado começa com 1 tropa
         }
     }
-    // ------------------------------------------
-    //            ATAQUE PERDIDO
-    // ------------------------------------------
-    else {
-        printf(">> O defensor resistiu ao ataque!\n");
+    
+    //Caso o atacante perca a rodada    
+    else{
+        printf("== O defensor resistiu ao ataque! ==\n");
 
         atacante->numTropas -= 1;
 
-        // atacante perdeu tudo → perde o território
+        //caso o atacante perca todas tropas, ele perde o território para o defensor
         if (atacante->numTropas <= 0) {
             printf(">> O atacante perdeu o território ao fracassar no ataque!\n");
             strcpy(atacante->cor, defensor->cor);
