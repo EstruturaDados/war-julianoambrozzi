@@ -32,6 +32,47 @@ void limparBufferEntrada(){
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+//Função de ataque e desefa do jogo
+void atacar(Territorio* atacante, Territorio* defensor) {
+    int dadoAtacante = (rand() % 6) + 1;
+    int dadoDefensor = (rand() % 6) + 1;
+
+    printf("\n=== BATALHA ENTRE %s (A) e %s (D) ===\n", atacante->nome, defensor->nome);
+    printf("Dado do atacante: %d\n", dadoAtacante);
+    printf("Dado do defensor: %d\n", dadoDefensor);
+    
+    //Caso o atacante vença a rodada ele ganha 1 tropa do defensor   
+    if (dadoAtacante > dadoDefensor) {
+        printf(">> O atacante venceu a rodada!\n");
+
+        defensor->numTropas -= 1; // defensor perde 1 tropa
+        atacante->numTropas += 1; // atacante ganha 1 tropa do defensor
+
+        // defensor perdeu todas as tropas?
+        if (defensor->numTropas <= 0) {
+            printf(">> O defensor perdeu o território!\n");
+            strcpy(defensor->cor, atacante->cor);
+            defensor->numTropas = 1; // território conquistado começa com 1 tropa
+        }
+    }
+    // ------------------------------------------
+    //            ATAQUE PERDIDO
+    // ------------------------------------------
+    else {
+        printf(">> O defensor resistiu ao ataque!\n");
+
+        atacante->numTropas -= 1;
+
+        // atacante perdeu tudo → perde o território
+        if (atacante->numTropas <= 0) {
+            printf(">> O atacante perdeu o território ao fracassar no ataque!\n");
+            strcpy(atacante->cor, defensor->cor);
+            atacante->numTropas = 1;
+        }
+    }
+}
+
+
 // --- Função Principal (main) ---
 int main() {    
     
@@ -44,7 +85,7 @@ int main() {
     printf("Quantos territorios deseja cadastrar?\n");
     printf("=====================================\n");
     scanf("%d", &qtdTerritorios);
-    getchar(); // limpa o \n do buffer
+    limparBufferEntrada(); // limpa o \n do buffer deixado pelo scanf
 
     //Alocação dinamica da memória
     Territorio* mapa = malloc(qtdTerritorios* sizeof(Territorio));
@@ -65,7 +106,7 @@ int main() {
 
         printf("Digite o numero de tropas do território: ");
         scanf("%d", &mapa[i].numTropas);
-        getchar();
+        limparBufferEntrada();
 
         mapa[i].nome[strcspn(mapa[i].nome, "\n")] = '\0';
         mapa[i].cor[strcspn(mapa[i].cor, "\n\n")] = '\0';        
@@ -83,7 +124,7 @@ int main() {
     //Nestre trecho do codigo fiz novamente o uso do "for",
     //a fins de facilitar a saida e exibição dos dados, aonde cada vez que o "i" for encrementado em +1,
     //e o laço repetir, vai exibir os dados contidos em cada posição do vetor.
-    for (int i = 0; i < MAX_TERRITORIOS; i++) {
+    for (int i = 0; i < qtdTerritorios; i++) {
         printf("%d.", i + 1);
         printf(" %s", mapa[i].nome);
         printf(" (Exercito %s,", mapa[i].cor);
