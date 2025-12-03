@@ -37,7 +37,7 @@ void atacar(Territorio* atacante, Territorio* defensor) {
     int dadoAtacante = (rand() % 6) + 1;
     int dadoDefensor = (rand() % 6) + 1;
 
-    printf("\n=== BATALHA ENTRE %s (A) e %s (D) ===\n", atacante->nome, defensor->nome);
+    printf("\n=== BATALHA ENTRE %s e %s ===\n", atacante->nome, defensor->nome);
     printf("Dado do atacante: %d\n", dadoAtacante);
     printf("Dado do defensor: %d\n", dadoDefensor);
     
@@ -128,9 +128,7 @@ int main() {
         printf(" %s", mapa[i].nome);
         printf(" (Exercito %s,", mapa[i].cor);
         printf(" Tropas: %d)\n", mapa[i].numTropas);
-    }
-    free(mapa);
-    return 0;
+    }    
 
     //=== FASE DE ATAQUE ===
     int atacante, defensor;
@@ -189,6 +187,8 @@ int main() {
         printf(" Tropas: %d)\n", mapa[i].numTropas);
         }
     }
+    free(mapa);
+    return 0;
 }
 
 // --- Implementação das Funções ---
