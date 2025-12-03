@@ -6,23 +6,25 @@
 //
 // Bibliotecas necessárias para o desenvolvimento do exercício
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 // --- Constantes Globais ---
-// Definido valores fixos para o número de territórios, tamanho nome e cor.
-#define MAX_TERRITORIOS 5
+// Definido valores fixos para tamanho de nome e cor.
+// #define MAX_TERRITORIOS 5 - aqui conforme solicitado retirado valor fixo.
 #define TAM_NOME 30
 #define TAM_COR 10
 
 // --- Estrutura de Dados ---
 // Definida a struct com nome de território, contendo seu nome, a cor do exército e o número de tropas.
-struct territorio{
+typedef struct {
     char nome[TAM_NOME];
     char cor[TAM_COR];
     int numTropas;
-};
+} Territorio;
 
-// Aqui eu fiz o uso de uma função para limpar o buffer de entrada,
+//Aqui eu fiz o uso de uma função para limpar o buffer de entrada,
 //utilizei baseado a orientação da profesora Deisy Albuquerque,
 //para evitar possiveis problemas com o scanf.
 void limparBufferEntrada(){
@@ -31,15 +33,29 @@ void limparBufferEntrada(){
 }
 
 // --- Função Principal (main) ---
-int main() {
-    struct territorio mapa[MAX_TERRITORIOS];
+int main() {    
     
     printf("===============================================================\n");
-    printf("Olá, a seguir vamos cadastrar os 5 territórios iniciais do jogo\n");
+    printf("Olá, a seguir vamos cadastrar os territórios iniciais do jogo\n");
     printf("===============================================================\n");
 
+    int qtdTerritorios;
+    printf("=====================================\n");
+    printf("Quantos territorios deseja cadastrar?\n");
+    printf("=====================================\n");
+    scanf("%d", &qtdTerritorios);
+    getchar(); // limpa o \n do buffer
+
+    //Alocação dinamica da memória
+    Territorio* mapa = malloc(qtdTerritorios* sizeof(Territorio));
+
+    if(mapa == NULL){
+        printf("Erro ao alocar memoria!\n");
+        return 1; //retorna 1 para indicar erro
+    }
+
     //Aqui foi utilizado o "for" junto com as variáveis para definir quantas vezes o codigo vai executar.
-    for(int i=0; i < MAX_TERRITORIOS; i++){
+    for(int i=0; i < qtdTerritorios; i++){
         printf("Cadastrando o território %d\n", i + 1);
         printf("Digite o nome do território: ");
         fgets(mapa[i].nome, TAM_NOME, stdin);
@@ -49,10 +65,10 @@ int main() {
 
         printf("Digite o numero de tropas do território: ");
         scanf("%d", &mapa[i].numTropas);
+        getchar();
 
         mapa[i].nome[strcspn(mapa[i].nome, "\n")] = '\0';
-        mapa[i].cor[strcspn(mapa[i].cor, "\n\n")] = '\0';
-        limparBufferEntrada();
+        mapa[i].cor[strcspn(mapa[i].cor, "\n\n")] = '\0';        
     }
 
     //Fiz o uso da sequencia de alguns printfs para deixar o codigo um pouco mais bonito e melhor de se visualizar.
@@ -73,6 +89,7 @@ int main() {
         printf(" (Exercito %s,", mapa[i].cor);
         printf(" Tropas: %d)\n", mapa[i].numTropas);
     }
+    free(mapa);
     return 0;
 }
 
