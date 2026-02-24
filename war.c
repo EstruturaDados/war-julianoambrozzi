@@ -15,6 +15,7 @@
 // #define MAX_TERRITORIOS 5 - aqui conforme solicitado retirado valor fixo.
 #define TAM_NOME 30
 #define TAM_COR 10
+#define QTD_TERRITORIOS 5
 
 // === Estrutura de Dados ===
 // Definida a struct com nome de território, contendo seu nome, a cor do exército e o número de tropas.
@@ -71,125 +72,109 @@ void atacar(Territorio* atacante, Territorio* defensor) {
     }
 }
 
+// Meu Principal
+void menuPrincipal() {
+    printf("\n=========================\n");
+    printf("       MENU PRINCIPAL    \n");
+    printf("=========================\n");
+    printf("1 - Atacar\n");
+    printf("2 - Verificar Missao\n");
+    printf("0 - Sair\n");
+    printf("=========================\n");
+    printf("Escolha uma opcao: ");
+}
+
+//Função que inicializa automaticamente os territórios do jogo
+void inicializarMapa(Territorio* mapa) {
+
+    strcpy(mapa[0].nome, "Brasil");
+    strcpy(mapa[0].cor, "Azul");
+    mapa[0].numTropas = 5;
+
+    strcpy(mapa[1].nome, "Argentina");
+    strcpy(mapa[1].cor, "Vermelho");
+    mapa[1].numTropas = 5;
+
+    strcpy(mapa[2].nome, "Chile");
+    strcpy(mapa[2].cor, "Verde");
+    mapa[2].numTropas = 5;
+
+    strcpy(mapa[3].nome, "Uruguai");
+    strcpy(mapa[3].cor, "Azul");
+    mapa[3].numTropas = 5;
+
+    strcpy(mapa[4].nome, "Paraguai");
+    strcpy(mapa[4].cor, "Verde");
+    mapa[4].numTropas = 5;
+}
+
+//Função para mostrar estado atual do mapa
+void mostrarMapa(const Territorio* mapa, int qtdTerritorios) {
+    printf("\n=== ESTADO ATUAL DO MAPA ===\n");
+    for (int i = 0; i < qtdTerritorios; i++) {
+        printf("%d. %s (Exercito %s, Tropas: %d)\n",
+               i + 1,
+               mapa[i].nome,
+               mapa[i].cor,
+               mapa[i].numTropas);
+    }
+}
 
 // === Função Principal (main) ===
 int main() {
-
+    //Inicialização para números aleatórios de dados de batalha e missões
     srand(time(NULL));
-    
-    printf("===============================================================\n");
-    printf("Olá, a seguir vamos cadastrar os territórios iniciais do jogo\n");
-    printf("===============================================================\n");
 
-    int qtdTerritorios;
-    printf("=====================================\n");
-    printf("Quantos territorios deseja cadastrar?\n");
-    printf("=====================================\n");
-    scanf("%d", &qtdTerritorios);
-    limparBufferEntrada(); //limpa o \n do buffer deixado pelo scanf
+    // Quantidade fixa de territórios
+    const int qtdTerritorios = 5;
 
-    //Alocação dinamica da memória
+    //Alocação dinâmica do mapa usando calloc
     Territorio* mapa = calloc(qtdTerritorios, sizeof(Territorio));
-
-    if(mapa == NULL){
+    if (mapa == NULL) {
         printf("Erro ao alocar memoria!\n");
-        return 1; //retorna 1 para indicar erro
+        return 1;
     }
 
-    //Aqui foi utilizado o "for" junto com as variáveis para definir quantas vezes o codigo vai executar.
-    for(int i=0; i < qtdTerritorios; i++){
-        printf("Cadastrando o território %d\n", i + 1);
-        printf("Digite o nome do território: ");
-        fgets(mapa[i].nome, TAM_NOME, stdin);
+    // Inicializa automaticamente os territórios
+    inicializarTerritorios(mapa, qtdTerritorios);
 
-        printf("Digite uma cor para o território (Ex: Azul, Vermelho): ");
-        fgets(mapa[i].cor, TAM_COR, stdin);
+    // Sorteia a missão do jogador
+    int missao = sortearMissao();
 
-        printf("Digite o numero de tropas do território: ");
-        scanf("%d", &mapa[i].numTropas);
+    int opcao;
+    do {
+        //Exibe o menu principal
+        menuPrincipal();
+        scanf("%d", &opcao);
         limparBufferEntrada();
 
-        mapa[i].nome[strcspn(mapa[i].nome, "\n")] = '\0';
-        mapa[i].cor[strcspn(mapa[i].cor, "\n\n")] = '\0';        
-    }
+        switch (opcao) {
+            case 1:
+                //Executa a fase de ataque
+                faseAtaque(mapa, qtdTerritorios);
+                break;
 
-    //Fiz o uso da sequencia de alguns printfs para deixar o codigo um pouco mais bonito e melhor de se visualizar.
-    printf("=========================================\n");
-    printf("---TERRITÓRIOS CADASTRADOS COM SUCESSO---\n");
-    printf("=========================================\n\n");
+            case 2:
+                //Verifica se a missão foi cumprida
+                if (verificarMissao(mapa, qtdTerritorios, missao)) {
+                    printf("\n🎉 PARABENS! Missao cumprida com sucesso!\n");
+                    opcao = 0; // Encerra o jogo após vitória
+                }
+                break;
 
-    printf("=========================================\n");
-    printf("---LISTAGEM DOS TERRITÓRIOS DO MAPA---\n");
-    printf("=========================================\n\n");
+            case 0:
+                printf("\nEncerrando o jogo...\n");
+                break;
 
-    //Nestre trecho do codigo fiz novamente o uso do "for",
-    //a fins de facilitar a saida e exibição dos dados, aonde cada vez que o "i" for encrementado em +1,
-    //e o laço repetir, vai exibir os dados contidos em cada posição do vetor.
-    for (int i = 0; i < qtdTerritorios; i++) {
-        printf("%d.", i + 1);
-        printf(" %s", mapa[i].nome);
-        printf(" (Exercito %s,", mapa[i].cor);
-        printf(" Tropas: %d)\n", mapa[i].numTropas);
-    }    
-
-    //=== FASE DE ATAQUE ===
-    int atacante, defensor;
-
-    while (1) {
-        printf("\n====================\n");
-        printf("---FASE DE ATAQUE---\n");
-        printf("======================\n");
-
-        //Escolher atacante
-        printf("Escolha o território ATACANTE de 1 a %d ou 0 para sair: ", qtdTerritorios);
-        scanf("%d", &atacante);
-        limparBufferEntrada();
-
-        if (atacante == 0) {
-            printf("Saindo da fase de ataque...\n");
-            break;
-        }
-        atacante--; //Ajustar para índice
-
-        if (atacante < 0 || atacante >= qtdTerritorios) {
-            printf("Opção inválida! Tente novamente.\n");
-            continue;
+            default:
+                printf("\nOpcao invalida! Tente novamente.\n");
         }
 
-        //Escolher defensor
-        printf("Escolha o território DEFENSOR de 1 a %d ou 0 para sair: ", qtdTerritorios);
-        scanf("%d", &defensor);
-        limparBufferEntrada();
+    } while (opcao != 0);
 
-        if (defensor == 0) {
-            printf("Saindo da fase de ataque...\n");
-            break;
-        }
-        defensor--; //Ajustar para índice
-
-        if (defensor < 0 || defensor >= qtdTerritorios) {
-            printf("Opção inválida! Tente novamente.\n");
-            continue;
-        }
-
-        if (atacante == defensor) {
-            printf("Um território não pode atacar ele mesmo!\n");
-            continue;
-        }
-
-        // Executar o ataque
-        atacar(&mapa[atacante], &mapa[defensor]);
-
-        // Mostrar estado atualizado após o ataque
-        printf("\n--- ESTADO ATUAL DO MAPA ---\n");
-        for (int i = 0; i < qtdTerritorios; i++) {
-        printf("%d.", i + 1);
-        printf(" %s", mapa[i].nome);
-        printf(" (Exercito %s,", mapa[i].cor);
-        printf(" Tropas: %d)\n", mapa[i].numTropas);
-        }
-    }
+    // Libera a memória alocada
     free(mapa);
+
     return 0;
 }
 
