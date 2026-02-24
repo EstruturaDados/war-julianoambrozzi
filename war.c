@@ -205,6 +205,49 @@ int verificarMissao(const Territorio* mapa, const int qtdTerritorios, const int 
     return 0; // segurança
 }
 
+// Função responsável por controlar a fase de ataque do jogo
+void faseAtaque(Territorio* mapa, const int qtdTerritorios){
+    int atacante, defensor;
+
+    //Mostra o mapa antes do ataque
+    mostrarMapa(mapa, qtdTerritorios);
+
+    //Escolher território atacante
+    printf("\nEscolha o territorio ATACANTE (1 a %d): ", qtdTerritorios);
+    scanf("%d", &atacante);
+    limparBufferEntrada();
+
+    atacante--; //Ajuste para índice do vetor
+
+    if (atacante < 0 || atacante >= qtdTerritorios){
+        printf("Territorio atacante invalido!\n");
+        return;
+    }
+
+    //Escolher território defensor
+    printf("Escolha o territorio DEFENSOR (1 a %d): ", qtdTerritorios);
+    scanf("%d", &defensor);
+    limparBufferEntrada();
+
+    defensor--; // Ajuste para índice do vetor
+
+    if (defensor < 0 || defensor >= qtdTerritorios){
+        printf("Territorio defensor invalido!\n");
+        return;
+    }
+
+    if (atacante == defensor){
+        printf("Um territorio nao pode atacar a si mesmo!\n");
+        return;
+    }
+
+    //Executa o ataque
+    atacar(&mapa[atacante], &mapa[defensor]);
+
+    //Mostra o mapa após o ataque
+    mostrarMapa(mapa, qtdTerritorios);
+}
+
 // === Função Principal (main) ===
 int main(){
     //Inicialização para números aleatórios de dados de batalha e missões
