@@ -42,7 +42,7 @@ void atacar(Territorio* atacante, Territorio* defensor) {
     printf("Dado do defensor: %d\n", dadoDefensor);
     
     //Caso o atacante vença a rodada ele ganha 1 tropa do defensor   
-    if (dadoAtacante > dadoDefensor) {
+    if (dadoAtacante >= dadoDefensor) {
         printf("=== O atacante venceu a rodada! ===\n");
 
         defensor->numTropas -= 1; //Defensor perde 1 tropa
@@ -74,6 +74,8 @@ void atacar(Territorio* atacante, Territorio* defensor) {
 
 // === Função Principal (main) ===
 int main() {
+
+    srand(time(NULL));
     
     printf("===============================================================\n");
     printf("Olá, a seguir vamos cadastrar os territórios iniciais do jogo\n");
@@ -87,7 +89,7 @@ int main() {
     limparBufferEntrada(); //limpa o \n do buffer deixado pelo scanf
 
     //Alocação dinamica da memória
-    Territorio* mapa = malloc(qtdTerritorios* sizeof(Territorio));
+    Territorio* mapa = calloc(qtdTerritorios, sizeof(Territorio));
 
     if(mapa == NULL){
         printf("Erro ao alocar memoria!\n");
